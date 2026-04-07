@@ -1,6 +1,7 @@
 {
   "name": "@storylenses/mcp-server",
-  "version": "0.1.2",
+  "version": "0.1.3",
+  "mcpName": "io.github.benediktgirz/storylenses",
   "description": "StoryLenses MCP Server — AI cover letter generation for agents",
   "type": "module",
   "main": "dist/index.js",

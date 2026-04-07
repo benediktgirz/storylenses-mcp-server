@@ -35,7 +35,7 @@ const client = new StoryLensesClient(API_BASE, API_KEY);
 
 const server = new McpServer({
   name: "storylenses",
-  version: "0.1.2",
+  version: "0.1.3",
 });
 
 // Tool 1: Analyze Job Posting
