@@ -25,11 +25,17 @@ try {
   process.exit(1);
 }
 
+if (!API_KEY) {
+  console.error("\n[StoryLenses MCP] No API key configured.");
+  console.error("  Get your free API key at: https://www.storylenses.app/developers");
+  console.error("  Then set: STORYLENSES_API_KEY=sl_live_xxx\n");
+}
+
 const client = new StoryLensesClient(API_BASE, API_KEY);
 
 const server = new McpServer({
   name: "storylenses",
-  version: "0.1.1",
+  version: "0.1.2",
 });
 
 // Tool 1: Analyze Job Posting
