@@ -1,0 +1,24 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      STORYLENSES_API_KEY:
+        type: string
+        description: "Your StoryLenses API key (get one at storylenses.app/mcp)"
+      STORYLENSES_API_URL:
+        type: string
+        description: "StoryLenses API base URL"
+        default: "https://www.storylenses.app"
+    required:
+      - STORYLENSES_API_KEY
+  commandFunction:
+    |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "@storylenses/mcp-server"],
+      env: {
+        STORYLENSES_API_KEY: config.STORYLENSES_API_KEY,
+        STORYLENSES_API_URL: config.STORYLENSES_API_URL || "https://www.storylenses.app"
+      }
+    })
