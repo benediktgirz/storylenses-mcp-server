@@ -8,11 +8,28 @@ import { StoryLensesClient } from "./client.js";
 const API_BASE = process.env.STORYLENSES_API_URL || "https://www.storylenses.app";
 const API_KEY = process.env.STORYLENSES_API_KEY || "";
 
+// Security: validate API URL is HTTPS and points to a known domain
+const allowedHosts = ["www.storylenses.app", "storylenses.app", "localhost"];
+try {
+  const parsedUrl = new URL(API_BASE);
+  if (!allowedHosts.includes(parsedUrl.hostname) && !parsedUrl.hostname.endsWith(".storylenses.app")) {
+    console.error(`[SECURITY] STORYLENSES_API_URL points to untrusted host: ${parsedUrl.hostname}. Only *.storylenses.app and localhost are allowed.`);
+    process.exit(1);
+  }
+  if (parsedUrl.protocol !== "https:" && parsedUrl.hostname !== "localhost") {
+    console.error(`[SECURITY] STORYLENSES_API_URL must use HTTPS (got ${parsedUrl.protocol})`);
+    process.exit(1);
+  }
+} catch {
+  console.error(`[SECURITY] Invalid STORYLENSES_API_URL: ${API_BASE}`);
+  process.exit(1);
+}
+
 const client = new StoryLensesClient(API_BASE, API_KEY);
 
 const server = new McpServer({
   name: "storylenses",
-  version: "0.1.0",
+  version: "0.1.1",
 });
 
 // Tool 1: Analyze Job Posting

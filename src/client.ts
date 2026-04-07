@@ -76,8 +76,18 @@ export class StoryLensesClient {
     });
 
     if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(`API error ${response.status}: ${(errorBody as Record<string, string>).error || response.statusText}`);
+      const errorBody = await response.json().catch(() => ({}));
+      // Only expose safe error messages — not internal server details
+      const safeMessages: Record<number, string> = {
+        400: "Invalid request parameters",
+        401: "Invalid or missing API key",
+        402: "No credits remaining — upgrade your plan at storylenses.app/mcp",
+        403: "Insufficient permissions for this operation",
+        429: "Rate limit exceeded — try again later",
+      };
+      const message = safeMessages[response.status] || `Request failed (${response.status})`;
+      const detail = (errorBody as Record<string, string>).error;
+      throw new Error(detail && response.status < 500 ? `${message}: ${detail}` : message);
     }
 
     return response.json();
